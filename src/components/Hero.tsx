@@ -59,7 +59,7 @@ export function Hero() {
         </div>
 
         {/* Right column: photo + ID panel */}
-        <div className="order-1 md:order-2 reveal">
+        <div className="hero-media order-1 md:order-2 reveal">
           <div
             ref={photoRef}
             className="photo-frame relative overflow-hidden border border-[var(--border)] mb-4"
@@ -87,14 +87,14 @@ export function Hero() {
           </div>
 
           {/* ID panel */}
-          <dl className="border border-[var(--border)] bg-[var(--surface)] font-mono text-sm">
+          <dl className="border border-[var(--border)] bg-[var(--surface)] font-mono text-[12px] sm:text-sm">
             {HERO.panel.map((row, i) => (
               <div
                 key={row.key}
-                className={`flex items-center justify-between gap-4 px-4 py-2.5 ${i > 0 ? 'border-t border-[var(--border)]' : ''}`}
+                className={`flex items-center justify-between gap-3 px-3 py-2.5 sm:gap-4 sm:px-4 ${i > 0 ? 'border-t border-[var(--border)]' : ''}`}
               >
-                <dt className="text-[var(--text-muted)]">{row.key}:</dt>
-                <dd className="text-[var(--text)] text-right">
+                <dt className="shrink-0 text-[var(--text-muted)]">{row.key}:</dt>
+                <dd className="min-w-0 break-words text-[var(--text)] text-right">
                   {row.live === 'clock' && (
                     <>
                       {row.value} <span className="text-[var(--accent)]">{clock} WIB</span>
