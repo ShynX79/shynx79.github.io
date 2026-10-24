@@ -53,15 +53,28 @@ export function Projects({ onOpen }: Props) {
     const SCALE_STEP = 0.16;
     const FADE = 0.38;
 
+    // Cache layout metrics so the scroll handler never forces a reflow
+    // (reading offset*/clientWidth per frame = layout thrashing = jank).
+    let viewportW = 0;
+    let metrics: { left: number; width: number }[] = [];
+    const measure = () => {
+      viewportW = scroller.clientWidth;
+      metrics = slideRefs.current.map((el) =>
+        el ? { left: el.offsetLeft, width: el.offsetWidth } : { left: 0, width: 0 }
+      );
+    };
+
     let raf = 0;
     const apply = () => {
-      const centerX = scroller.scrollLeft + scroller.clientWidth / 2;
+      const centerX = scroller.scrollLeft + viewportW / 2;
       let bestIdx = 0;
       let bestDist = Infinity;
-      for (const [i, el] of slideRefs.current.entries()) {
-        if (!el) continue;
-        const w = el.offsetWidth || 1;
-        const d = Math.max(-2.5, Math.min(2.5, (el.offsetLeft + w / 2 - centerX) / w));
+      for (let i = 0; i < metrics.length; i++) {
+        const el = slideRefs.current[i];
+        const m = metrics[i];
+        if (!el || !m) continue;
+        const w = m.width || 1;
+        const d = Math.max(-2.5, Math.min(2.5, (m.left + w / 2 - centerX) / w));
         const abs = Math.abs(d);
         if (abs < bestDist) {
           bestDist = abs;
@@ -81,13 +94,18 @@ export function Projects({ onOpen }: Props) {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(apply);
     };
+    const onResize = () => {
+      measure();
+      onScroll();
+    };
 
-    scroller.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    measure();
     apply();
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
     return () => {
       scroller.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('resize', onResize);
       cancelAnimationFrame(raf);
     };
   }, [prefersReducedMotion]);
@@ -143,30 +161,34 @@ export function Projects({ onOpen }: Props) {
                     alt={`${p.name} — ${p.screenshots[0].caption}`}
                     width={1600}
                     height={1000}
-                    loading="lazy"
+                    loading="eager"
                     decoding="async"
                     className="card-shot block"
                   />
                 </picture>
               </div>
 
-              <div className="p-5 flex flex-col flex-1">
-                <div className="flex items-center justify-between font-mono text-xs text-[var(--text-muted)] mb-3">
-                  <span>{p.index}</span>
-                  <span>{p.year}</span>
+              <div className="p-4 sm:p-5 flex flex-col flex-1">
+                <div className="flex items-center justify-between gap-2 font-mono text-[11px] sm:text-xs text-[var(--text-muted)] mb-2 sm:mb-3">
+                  <span className="shrink-0">{p.index}</span>
+                  <span className="truncate">{p.year}</span>
                 </div>
 
-                <h3 className="text-xl font-semibold mb-2">{p.name}</h3>
+                <h3 className="text-lg sm:text-xl font-semibold mb-1.5 sm:mb-2 truncate">{p.name}</h3>
 
-                <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-3 line-clamp-2">
+                <p className="text-[13px] sm:text-sm text-[var(--text-muted)] leading-snug mb-2 sm:mb-3 line-clamp-2">
                   {p.description}
                 </p>
 
-                <p className="text-sm font-medium text-[var(--accent)] mb-3">{p.metric}</p>
+                <p className="text-[13px] sm:text-sm font-medium text-[var(--accent)] mb-2 sm:mb-3 line-clamp-1">
+                  {p.metric}
+                </p>
 
-                <p className="font-mono text-[13px] text-[var(--text-muted)]">{p.stack}</p>
+                <p className="font-mono text-[12px] sm:text-[13px] text-[var(--text-muted)] line-clamp-1">
+                  {p.stack}
+                </p>
 
-                <div className="mt-auto pt-4 border-t border-[var(--border)] flex items-center justify-between font-mono text-xs">
+                <div className="mt-auto pt-3 sm:pt-4 border-t border-[var(--border)] flex items-center justify-between font-mono text-xs">
                   {p.liveUrl ? (
                     <a
                       href={p.liveUrl}

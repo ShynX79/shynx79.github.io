@@ -38,7 +38,7 @@ export function Navigation({ activeId }: { activeId: string }) {
 
         <div className="flex items-center gap-4">
           {/* Hire me (desktop) */}
-          <a href="#contact" className="btn btn-ghost hidden md:inline-flex" aria-label="Hire me — go to contact">
+          <a href="#contact" className="btn btn-ghost nav-hire" aria-label="Hire me — go to contact">
             Hire me
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--status-green)]" aria-hidden="true" />
           </a>
@@ -46,7 +46,7 @@ export function Navigation({ activeId }: { activeId: string }) {
           {/* Mobile menu button */}
           <button
             type="button"
-            className="btn btn-ghost md:hidden !px-3 !py-2"
+            className="btn btn-ghost nav-menu-toggle !px-3 !py-2"
             aria-expanded={open}
             aria-controls="mobile-menu"
             onClick={() => setOpen((v) => !v)}
@@ -58,7 +58,7 @@ export function Navigation({ activeId }: { activeId: string }) {
 
       {/* Mobile full-width list */}
       {open && (
-        <nav id="mobile-menu" className="md:hidden border-t border-[var(--border)] bg-[var(--bg)]" aria-label="Mobile navigation">
+        <nav id="mobile-menu" className="mobile-menu md:hidden border-t border-[var(--border)] bg-[var(--bg)]" aria-label="Mobile navigation">
           <ul className="container-12 py-2">
             {NAV.map(({ id, label }) => (
               <li key={id} className="border-b border-[var(--border)] last:border-b-0">
