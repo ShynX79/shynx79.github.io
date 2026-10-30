@@ -37,7 +37,7 @@ export const HERO = {
   secondaryCta: '$ cat resume.pdf',
   resumeUrl: 'resume.pdf',
   photo: {
-    src: 'profile.jpg',
+    src: 'profile.jpeg',
     alt: 'Muhammad Toti Kurniawan',
     width: 960,
     height: 1280,
@@ -61,9 +61,9 @@ export interface EducationEntry {
 
 export const ABOUT = {
   path: '~/about',
-  body: "Informatics graduate (GPA 3.12/4.00) with hands-on experience building fullstack web applications using React.js, Next.js, and Node.js. Built REST APIs, implemented authentication middleware, and designed database schemas with MySQL, Supabase, and Firebase across company, government, and academic projects. Seeking a Junior Fullstack Developer or Junior Backend Developer role.",
+  body: "Informatics graduate (GPA 3.13/4.00) with hands-on experience building fullstack web applications using React.js, Next.js, and Node.js. Built REST APIs, implemented authentication middleware, and designed database schemas with MySQL, Supabase, and Firebase across company, government, and academic projects. Seeking a Junior Fullstack Developer or Junior Backend Developer role.",
   education: [
-    { program: 'B.Sc. in Informatics', school: 'Universitas Jenderal Achmad Yani', date: 'Sep 2022 - 2026', note: 'GPA 3.12/4.00' },
+    { program: 'B.Sc. in Informatics', school: 'Universitas Jenderal Achmad Yani', date: 'Sep 2022 - 2026', note: 'GPA 3.13/4.00' },
     { program: 'High School Diploma, Science', school: 'SMA Negeri 2 Padalarang', date: 'Jul 2019 - May 2022' },
   ] as EducationEntry[],
   certifications: [
